@@ -1,0 +1,83 @@
+* {
+    box-sizing: border-box;
+}                                      
+body {                                     margin: 0;                             padding: 20px;                         background: #020503 !important;
+    color: #00ff66 !important;             font-family: monospace !important;     min-height: 100vh;                 }
+
+h1, h2, h3 {
+    color: #00ff66 !important;
+    text-shadow: 0 0 10px #00ff6680;
+    letter-spacing: 2px;
+}
+
+p, label, span {
+    color: #a5ffbd;
+}
+
+a {
+    color: #00ff66 !important;
+    overflow-wrap: anywhere;
+}
+
+input, textarea, select {
+    background: #050b07 !important;
+    color: #00ff66 !important;
+    border: 1px solid #00ff66 !important;
+    padding: 12px;
+    border-radius: 5px;
+}
+
+button {
+    background: #003b19 !important;
+    color: #00ff66 !important;
+    border: 1px solid #00ff66 !important;
+    padding: 12px 18px;
+    border-radius: 5px;
+    font-family: monospace;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #006b2d !important;
+    box-shadow: 0 0 15px #00ff66;
+}
+
+.panel, .card, .notice, .box {
+    background: #07100a !important;
+    border: 1px solid #087d36 !important;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 0 12px #00ff6620;
+}
+
+table {
+    background: #050b07;
+    color: #00ff66;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #087d36;
+    padding: 10px;
+}
+
+::selection {
+    background: #00ff66;
+    color: black;
+}
+
+.status {
+    color: #00ff66 !important;
+    text-shadow: 0 0 8px #00ff66;
+}
+
+@media(max-width:600px) {
+    body {
+        padding: 12px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
