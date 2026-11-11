@@ -1,0 +1,26 @@
+<!doctype html><html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GEO_TRACK | Hacker Terminal</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+        <h1>Dashboard Berbagi Lokasi</h1><p><a href="/logout">Keluar</a></p>
+<form method="post" action="/create"><label>Nama/tujuan link: <input name="label" maxlength="80" placeholder="Contoh: Berbagi lokasi keluarga"></label> <button>Buat link baru</button></form>
+<p class="muted">Link berlaku {{ 24 }} jam secara default. Bagikan hanya kepada orang yang memahami dan menyetujui permintaan ini.</p>
+<h2>Link dan lokasi yang dibagikan</h2>
+{% for s in shares %}
+<div class="card">
+<strong>{{s["label"]}}</strong><p class="muted">Dibuat: {{s["created_at"]}} UTC</p>
+<p><a href="{{ url_for('share_page', token=s['token'], _external=True) }}">{{ url_for('share_page', token=s['token'], _external=True) }}</a></p>
+{% if s["latitude"] is not none %}
+<p>Latitude: {{s["latitude"]}}<br>Longitude: {{s["longitude"]}}<br>Akurasi: ±{{s["accuracy"]}} meter<br>Dibagikan: {{s["shared_at"]}} UTC</p>
+<a target="_blank" rel="noopener" href="https://www.google.com/maps?q={{s['latitude']}},{{s['longitude']}}">Buka di Google Maps</a>
+{% else %}<p>Belum ada lokasi yang dibagikan.</p>{% endif %}
+<p class="muted">Kedaluwarsa: {{s["expires_at"]}} UTC</p>
+</div>
+{% else %}<p>Belum ada link.</p>{% endfor %}
+</body>
+</html>
