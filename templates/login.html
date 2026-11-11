@@ -1,0 +1,5 @@
+<!doctype html><html lang="id">        
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">          <title>GEO_TRACK | Hacker Terminal</title>                                                                           <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">                                     </head>                                        <h1>Login Admin</h1>{% with messages=get_flashed_messages() %}{% for m in messages %}<p>{{m}}</p>{% endfor %}{% endwith %}
+<form method="post"><label>Kata sandi admin</label><input type="password" name="password" required><button>Masuk</button></form>
