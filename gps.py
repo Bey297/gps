@@ -1,8 +1,12 @@
 import os
 import secrets
 import sqlite3
-from datetime import datetime, timedelta, timezone                            from functools import wraps
-from urllib.parse import urljoin                                              from flask import Flask, abort, flash, redirect, render_template, request, session, url_for                          os.system("chmod +x start.sh")         os.system("export ADMIN_PASSWORD='password123'")
+from datetime import datetime, timedelta, timezone                            
+from functools import wraps
+from urllib.parse import urljoin                                              
+from flask import Flask, abort, flash, redirect, render_template, request, session, url_for                          
+os.system("chmod +x start.sh")         
+os.system("export ADMIN_PASSWORD='password123'")
 nama = 'alias start="bash /data/data/com.termux/files/home/gps/start.sh"'
 file_name = "/data/data/com.termux/files/home/.bashrc"
 
