@@ -13,5 +13,3 @@ setelah itu buka tab baru
 nanti akan muncul link https://domain.lhr.life
 
 setelah itu buka link tsb
-
-dan isi password admin nya
